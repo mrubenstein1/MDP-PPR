@@ -1,8 +1,7 @@
 #########################################################################
-# RESERVE EXAMPLE
+# PPR LA DECISIONS ####
 #########################################################################
 
-#test example. 
 
 rm(list=ls()) # remove existing variables
 
@@ -11,55 +10,41 @@ rm(list=ls()) # remove existing variables
   # Conserved (Purchased) Parcels = 1 ; benefits are counted
   # Converted (Lost) Parcels = 2 ; benefits are not counted
 
+
+##################################################
+#      CHOOSE STATIONARITY SCENARIO TO RUN        #####
+##################################################
+#
+# Set this variable to control the input data (variable or constant ecological data)
+# Options: "constant" or "variable"
+#
+benefit_scenario <- "variable"
+
+##################################################
+#      CALL REFERENCE SCRIPTS        ####
+##################################################
+
 library(MDPtoolbox)
 library(graphics)
 library(dplyr)
+
+##################################################
+#      CALL SOURCE SCRIPTS        ####
+##################################################
+
+source('Input_data.r')
 source('mdp_finite_horizon_nonStationary.r')
 source('greedy_solver.r')
 source('mdp_myopic_forward_look_policy.R')
 source('mdp_example_PPR_non_stationary.r')
 source('explore_solution_PPR.r')
-source('dec2binvec.r')
-source('getSite.r')
-source('binvec2dec.r')
-source('getState.r')
-
-
-##################################################
-#      CHOOSE SCENARIO TO RUN        #
-##################################################
-#
-# Set this variable to control the input data.
-# Options: "constant" or "variable"
-#
-benefit_scenario <- "variable"
-
-toyPB = TRUE
-# CAREFULL when using getState(), the id of the state returned should get +1 (starts at 0)
-# > x= c(2,1,0)
-# > getState(x)
-# [1] 5
-# > policy[6,2]
-# [1] 3
-if (toyPB==F){
-  ## Specification of the non stationary PPR problem
-  # How many sites and time steps
-  init_site <- 3
-  time_step <- 3 # last step is time_step+1
-  
-  # M is the time dependent benefit matrix Site x time_step
-  # random generation or provide data
-  M <- round(matrix(nrow=init_site, ncol=time_step, data=runif(init_site*time_step,1,5)))
-  
-  # term is a vector representing the terminal benefit (reward) at each site (time_step+1) 
-  term <- round(matrix(runif(init_site, 1, 5), nrow = init_site, ncol = 1))
-  
-  # Pj is the time dependent matrix representing the probability of a site being converted at every time step 
-  Pj <- round(array(runif(init_site*time_step, min=0, max=0.4), c(init_site,time_step))*100)/100
-} else {source('PPR_toyproblem.r')}
+source('R/dec2binvec.r')
+source('R/getSite.r')
+source('R/binvec2dec.r')
+source('R/getState.r')
 
 ##################################################
-#      BUILD & SOLVE MDP    #
+#      BUILD & SOLVE MDP    ####
 #################################################
 
 ## Build the MDP
@@ -88,7 +73,7 @@ sim_runs_optimal <- lapply(1:1000, function(i) {
 
 
 #########################################################
-# BUILD & SOLVE Greedy Algorithm #
+# BUILD & SOLVE Greedy Algorithm ####
 #########################################################
 
 ## Solve the greedy algorithm
@@ -109,7 +94,7 @@ sim_runs_greedy <- lapply(1:1000, function(i) {
 
 
 #########################################################
-# BUILD & SOLVE Forward Looking Myopic Model #
+# BUILD & SOLVE Forward Looking Myopic Model ####
 #########################################################
 
 ## Solve the forward-looking myopic algorithm
