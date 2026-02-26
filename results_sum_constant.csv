@@ -1,4 +1,0 @@
-"Model","mean_r","sd_r","data_scenario"
-"fl_myopic",164.603,17.2683985530966,"constant"
-"greedy",164.925,17.0400627563028,"constant"
-"optimal",164.201,17.3890476443645,"constant"

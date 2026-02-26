@@ -18,7 +18,7 @@ rm(list=ls()) # remove existing variables
 # Set this variable to control the input data (variable or constant ecological data)
 # Options: "constant" or "variable"
 #
-benefit_scenario <- "variable"
+benefit_scenario <- "constant"
 
 ##################################################
 #      CALL REFERENCE SCRIPTS        ####
@@ -142,13 +142,6 @@ raw_results_table <- bind_rows(
   data.frame(TerminalReward = terminal_rewards_fl_myopic, Model = "fl_myopic")
 )
 
-# Save into csv w/ dynamic file name
-raw_output_filename <- paste0("raw_simulation_results_", benefit_scenario, ".csv")
-
-# Save the raw data to a new CSV file
-write.csv(raw_results_table, raw_output_filename, row.names = FALSE)
-cat("\nRaw simulation data saved to:", raw_output_filename, "\n")
-
 
 # --- 3. CREATE AND SAVE THE SUMMARY TABLE ---
 
@@ -208,8 +201,13 @@ dynamic_name <- paste0("results_sum_enhanced_", benefit_scenario)
 assign(dynamic_name, results_sum_enhanced)
 
 # Save the enhanced summary to a CSV file
-write.csv(results_sum_enhanced, paste0(dynamic_name, ".csv"), row.names = FALSE)
-cat("Enhanced summary statistics saved to:", paste0(dynamic_name, ".csv"), "\n")
+
+
+write.csv(
+  results_sum_enhanced,
+  file = file.path("results", paste0(dynamic_name, ".csv")),
+  row.names = FALSE
+)
 
 # Print the contents of the newly created enhanced summary object
 cat("\n--- Final Enhanced Summary Table (`", dynamic_name, "`) ---\n", sep="")
