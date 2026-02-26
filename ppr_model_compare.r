@@ -33,7 +33,7 @@ library(dplyr)
 ##################################################
 
 source('Input_data.r')
-source('mdp_finite_horizon_nonStationary.r')
+source('mdp_builder/mdp_finite_horizon_nonStationary.r')
 source('solver_greedy.r')
 source('solver_mdp_myopic.R')
 source('solver_mdp_nonstationary.r')
